@@ -160,7 +160,7 @@ function main()
     pa = Param(g)
     f = Firm(g)
     @time vfi!(g, pa, f)
-    return f
+    return f, g
 end
 
-f = main()
+f, g = main()

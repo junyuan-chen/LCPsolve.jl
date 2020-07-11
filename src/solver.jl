@@ -72,7 +72,7 @@ struct LCP{TF<:AbstractFloat, TM<:DenseOrSparseMatrix{TF}}
     fb::FB{TF}
     nfb::FB{TF}
 
-    function LCP{TF,TM}(M::TM, q::Vector{TF},
+    function LCP{TF,TM}(M::TM, q::Vector{TF};
         l::Vector{TF}=fill(0.0, size(q)), u::Vector{TF}=fill(Inf, size(q))
         ) where {TF<:AbstractFloat,TM<:DenseOrSparseMatrix{TF}}
         n = length(q)
@@ -82,6 +82,8 @@ struct LCP{TF<:AbstractFloat, TM<:DenseOrSparseMatrix{TF}}
             throw(DimensionMismatch("length of vector l does not match matrix M"))
         length(u) != n &&
             throw(DimensionMismatch("length of vector u does not match matrix M"))
+        sum(l.<u) != n &&
+            throw(DomainError((l[l.>=u],u[l.>=u]), "l must be smaller than u for each element"))
         x = Vector{TF}(undef, n)
         nx = Vector{TF}(undef, n)
         bl = (l.>-Inf) .& (u.== Inf)
@@ -100,7 +102,7 @@ struct LCP{TF<:AbstractFloat, TM<:DenseOrSparseMatrix{TF}}
 end
 
 """
-    LCP(M::DenseOrSparseMatrix, q::Vector, l=fill(0.0, size(q)), u=fill(Inf, size(q)))
+    LCP(M::DenseOrSparseMatrix, q::Vector; l=fill(0.0, size(q)), u=fill(Inf, size(q)))
 
 Specify a complementarity problem that finds a real vector `x` such that for each element indexed by `i`
 ```math
@@ -118,14 +120,14 @@ the problem is specified as finding an `x` such that
     x'(Mx + q) = 0.
 ```
 """
-function LCP(M::DenseOrSparseMatrix, q::Vector,
+function LCP(M::DenseOrSparseMatrix, q::Vector;
     l::Vector=fill(0.0, size(q)), u::Vector=fill(Inf, size(q)))
     T = promote_type(eltype(M), eltype(q), eltype(l), eltype(u))
     M = typeof(M) <: Matrix ? Matrix{T}(M) : SparseMatrixCSC{T}(M)
     q = Vector{T}(q)
     l = Vector{T}(l)
     u = Vector{T}(u)
-    return LCP{T,DenseOrSparseMatrix{T}}(M, q, l, u)
+    return LCP{T,DenseOrSparseMatrix{T}}(M, q, l=l, u=u)
 end
 
 # Evaluate Fischer-Burmeister function and its Jacobian

@@ -2,7 +2,7 @@
 
 A solver for linear complementarity problems.
 
-The package provides a Julia implementation of the
+This package provides a Julia implementation of the
 [Matlab routine](https://www.mathworks.com/matlabcentral/fileexchange/20952-lcp-mcp-solver-newton-based)
 written by Yuval Tassa.
 The solver is particularly useful when the problem to be solved is ill-conditioned.
@@ -48,7 +48,7 @@ the following three equations hold simultaneously:
 
 It is advisable to construct `M` as a sparse matrix of type `SparseMatrixCSC`.
 
-By providing `LCP` the optional arguments `l` and `u`,
+By providing `LCP` the keyword arguments `l` and `u`,
 which represent constraints as vectors,
 one can solve the more general problem
 in which each element of `x` indexed by `i`
