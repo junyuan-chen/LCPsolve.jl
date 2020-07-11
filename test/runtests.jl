@@ -1,5 +1,5 @@
 using Test
-using LCPsolver
+using LCPsolve
 using LinearAlgebra
 using SparseArrays
 

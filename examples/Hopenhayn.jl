@@ -1,4 +1,4 @@
-# An illustrative usage of LCPsolver for solving a version of the Hopenhayn Model
+# An illustrative usage of LCPsolve for solving a version of the Hopenhayn Model
 
 # For model details, please see
 # https://benjaminmoll.com/wp-content/uploads/2020/06/hopenhayn.pdf
@@ -7,7 +7,7 @@
 
 using LinearAlgebra
 using SparseArrays
-using LCPsolver
+using LCPsolve
 
 # Discretized firm productivity
 struct Grid{TF<:AbstractFloat}

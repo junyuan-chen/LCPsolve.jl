@@ -1,4 +1,4 @@
-# An illustrative usage of LCPsolver for solving a consumption-saving model
+# An illustrative usage of LCPsolve for solving a consumption-saving model
 # with an indivisible durable
 
 # For model details, please see
@@ -8,7 +8,7 @@
 
 using LinearAlgebra
 using SparseArrays
-using LCPsolver
+using LCPsolve
 
 mutable struct Household{TF<:AbstractFloat, TI<:Integer, TFN1<:Function, TFN2<:Function, TFN3<:Function}
     ρ::TF

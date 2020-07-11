@@ -1,4 +1,4 @@
-# LCPsolver.jl
+# LCPsolve.jl
 
 A solver for linear complementarity problems.
 
@@ -25,7 +25,7 @@ which is returned in an object of type `SolverResults`.
 The solution is stored in the field `sol`.
 
 ```julia
-using LCPsolver, SparseArrays
+using LCPsolve, SparseArrays
 n = 10000
 M = spdiagm(0=>[9;fill(17,n-2);9], -1=>fill(-8,n-1), 1=>fill(-8,n-1))
 q = -log.(collect(LinRange(0.05,5,n)))

@@ -1,4 +1,4 @@
-module LCPsolver
+module LCPsolve
 
 using LinearAlgebra
 using SparseArrays
