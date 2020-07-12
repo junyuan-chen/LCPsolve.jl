@@ -2,6 +2,9 @@
 
 A solver for linear complementarity problems.
 
+[![Build Status](https://travis-ci.org/junyuan-chen/LCPsolve.jl.svg?branch=master)](https://travis-ci.org/junyuan-chen/LCPsolve.jl)
+[![codecov](https://codecov.io/gh/junyuan-chen/LCPsolve.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/junyuan-chen/LCPsolve.jl)
+
 This package provides a Julia implementation of the
 [Matlab routine](https://www.mathworks.com/matlabcentral/fileexchange/20952-lcp-mcp-solver-newton-based)
 written by Yuval Tassa.
