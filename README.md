@@ -1,11 +1,22 @@
 # LCPsolve.jl
 
-A solver for linear complementarity problems.
+*A solver for linear complementarity problems*
 
-[![Build Status](https://travis-ci.org/junyuan-chen/LCPsolve.jl.svg?branch=master)](https://travis-ci.org/junyuan-chen/LCPsolve.jl)
-[![codecov](https://codecov.io/gh/junyuan-chen/LCPsolve.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/junyuan-chen/LCPsolve.jl)
+[![CI-stable][CI-stable-img]][CI-stable-url]
+[![codecov][codecov-img]][codecov-url]
+[![PkgEval][pkgeval-img]][pkgeval-url]
 
-This package provides a Julia implementation of the
+[CI-stable-img]: https://github.com/junyuan-chen/LCPsolve.jl/workflows/CI-stable/badge.svg
+[CI-stable-url]: https://github.com/junyuan-chen/LCPsolve.jl/actions?query=workflow%3ACI-stable
+
+[codecov-img]: https://codecov.io/gh/junyuan-chen/LCPsolve.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/junyuan-chen/LCPsolve.jl
+
+[pkgeval-img]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/L/LCPsolve.svg
+[pkgeval-url]: https://juliaci.github.io/NanosoldierReports/pkgeval_badges/L/LCPsolve.html
+
+[LCPsolve.jl](https://github.com/junyuan-chen/LCPsolve.jl)
+provides a Julia implementation of the
 [Matlab routine](https://www.mathworks.com/matlabcentral/fileexchange/20952-lcp-mcp-solver-newton-based)
 written by Yuval Tassa.
 The solver is particularly useful when the problem to be solved is ill-conditioned.
@@ -18,7 +29,7 @@ Illustrative applications in economics for solving optimal stopping problems can
 [here](https://benjaminmoll.com/codes/).
 
 Please see [NLsolve.jl](https://github.com/JuliaNLSolvers/NLsolve.jl)
-for solvers suitable for alternative scenarios.
+for solvers suitable for nonlinear problems.
 
 ## Usage
 
@@ -83,6 +94,6 @@ The `examples` folder contains more illustrations for the usage of the solver.
 
 Fischer, A. (1995). A Newton-type method for positive-semidefinite linear complementarity problems. Journal of Optimization Theory and Applications, 86(3), 585-608.
 
-Bazaraa, M. S., Sherali, H. D., & Shetty, C. M. (2013). Nonlinear programming: theory and algorithms. John Wiley & Sons.
+Bazaraa, M. S., Sherali, H. D., & Shetty, C. M. (2013). Nonlinear programming: Theory and algorithms. John Wiley & Sons.
 
 Tassa, Y. (2008). LCP / MCP solver (Newton-based). MATLAB Central File Exchange. Retrieved from https://www.mathworks.com/matlabcentral/fileexchange/20952-lcp-mcp-solver-newton-based.
