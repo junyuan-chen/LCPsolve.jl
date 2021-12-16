@@ -6,8 +6,7 @@ using Printf
 
 import Base.show,
        Base.push!,
-       Base.getindex,
-       Base.setindex!
+       Base.getindex
 
 export LCP, solve!
 

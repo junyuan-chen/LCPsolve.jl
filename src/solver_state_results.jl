@@ -19,12 +19,6 @@ Base.push!(tr::SolverTrace, st::SolverState) = push!(tr.states, st)
 
 Base.getindex(tr::SolverTrace, i::Integer) = getindex(tr.states, i)
 
-function Base.setindex!(tr::SolverTrace,
-                        st::SolverState,
-                        i::Integer)
-    setindex!(tr.states, st, i)
-end
-
 function Base.show(io::IO, tr::SolverTrace)
     for state in tr.states
         show(io, state)
