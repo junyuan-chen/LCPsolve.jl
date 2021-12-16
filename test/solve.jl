@@ -37,7 +37,8 @@ end
         iter =  2, ψ = 6e-04, r = 1.0, μ = 4e-05
         iter =  3, ψ = 9e-06, r = 1.0, μ = 8e-06
         iter =  4, ψ = 8e-09, r = 1.0, μ = 0e+00
-        iter =  5, ψ = 7e-15, r = 1.0, μ = 0e+00"""
+        iter =  5, ψ = 7e-15, r = 1.0, μ = 0e+00
+        """
     @test sprint(show, s) == """
         Results of Solving LCP
          * Convergence: true
