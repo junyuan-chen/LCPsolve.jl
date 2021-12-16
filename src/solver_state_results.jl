@@ -11,21 +11,15 @@ end
 
 SolverTrace() = SolverTrace(Array{SolverState}(undef, 0))
 
-function Base.show(io::IO, st::SolverState)
+function show(io::IO, st::SolverState)
     @printf io "iter = %2d, ψ = %3.0e, r = %3.1f, μ = %3.0e\n" st.iter st.ψ st.r st.μ
 end
 
-Base.push!(tr::SolverTrace, st::SolverState) = push!(tr.states, st)
+push!(tr::SolverTrace, st::SolverState) = push!(tr.states, st)
 
-Base.getindex(tr::SolverTrace, i::Integer) = getindex(tr.states, i)
+getindex(tr::SolverTrace, i::Integer) = getindex(tr.states, i)
 
-function Base.setindex!(tr::SolverTrace,
-                        st::SolverState,
-                        i::Integer)
-    setindex!(tr.states, st, i)
-end
-
-function Base.show(io::IO, tr::SolverTrace)
+function show(io::IO, tr::SolverTrace)
     for state in tr.states
         show(io, state)
     end
@@ -55,8 +49,8 @@ struct SolverResults{T<:Real}
     trace::SolverTrace
 end
 
-function Base.show(io::IO, re::SolverResults)
+function show(io::IO, re::SolverResults)
     @printf io "Results of Solving LCP\n"
     @printf io " * Convergence: %s\n" re.converged
-    @printf io " * iter = %2d, ψ = %3.0e, r = %3.1f, μ = %3.0e\n" re.iter re.ψ re.r re.μ
+    @printf io " * iter = %2d, ψ = %3.0e, r = %3.1f, μ = %3.0e" re.iter re.ψ re.r re.μ
 end

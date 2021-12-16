@@ -12,8 +12,8 @@ struct FBCache{TF<:AbstractFloat}
     a::Vector{TF}
     b::Vector{TF}
     s::Vector{TF}
-    da::SparseMatrixCSC{TF,Int}
-    db::SparseMatrixCSC{TF,Int}
+    da::Diagonal{TF,Vector{TF}}
+    db::Diagonal{TF,Vector{TF}}
     at::Vector{TF}
     bt::Vector{TF}
     st::Vector{TF}
@@ -23,8 +23,8 @@ function FBCache{TF}(n::Int, nt::Int) where {TF<:AbstractFloat}
     a = Vector{TF}(undef, n)
     b = Vector{TF}(undef, n)
     s = Vector{TF}(undef, n)
-    da = spdiagm(0=>Vector{TF}(undef, n))
-    db = spdiagm(0=>Vector{TF}(undef, n))
+    da = Diagonal(Vector{TF}(undef, n))
+    db = Diagonal(Vector{TF}(undef, n))
     at = Vector{TF}(undef, nt)
     bt = Vector{TF}(undef, nt)
     st = Vector{TF}(undef, nt)
@@ -34,7 +34,7 @@ end
 # Hold the evaluation of Fischer-Burmeister function and its Jacobian
 mutable struct FB{TF<:AbstractFloat}
     φ::Vector{TF}
-    J::SparseMatrixCSC{TF,Int}
+    J::DenseOrSparseMatrix{TF}
 end
 
 function FB{TF}(n::Int) where {TF<:AbstractFloat}
@@ -121,7 +121,7 @@ the problem is specified as finding an `x` such that
 ```
 """
 function LCP(M::DenseOrSparseMatrix, q::Vector;
-    l::Vector=fill(0.0, size(q)), u::Vector=fill(Inf, size(q)))
+        l::Vector=fill(0.0, size(q)), u::Vector=fill(Inf, size(q)))
     T = promote_type(eltype(M), eltype(q), eltype(l), eltype(u))
     M = typeof(M) <: Matrix ? Matrix{T}(M) : SparseMatrixCSC{T}(M)
     q = Vector{T}(q)
@@ -136,7 +136,8 @@ function update!(fb::FB, lcp::LCP, x::Vector)
     n, nt, bl, bu, blu, bf, ca = lcp.n, lcp.nt, lcp.bl, lcp.bu, lcp.blu, lcp.bf, lcp.ca
     a, b, s, da, db, at, bt, st = ca.a, ca.b, ca.s, ca.da, ca.db, ca.at, ca.bt, ca.st
     a .= x
-    b .= M*x+q
+    mul!(b, M, x)
+    b .+= q
 
     @inbounds a[bl] .= a[bl] .- l[bl]
     @inbounds a[bu] .= u[bu] .- a[bu]
@@ -148,7 +149,7 @@ function update!(fb::FB, lcp::LCP, x::Vector)
         st .= sqrt.(at.^2 .+ bt.^2)
         @inbounds a[blu] .= x[blu] .- l[blu]
         @inbounds b[blu] .= st .- at .- bt
-        @inbounds M[blu,:] = -sparse(1:nt, blu, at./st.-ones(nt), nt, n) - sparse(1:nt,1:nt,bt./st.-ones(nt))*M[blu,:]
+        @inbounds M[blu,:] = -sparse(1:nt, (1:n)[blu], at./st.-1.0, nt, n) - sparse(1:nt,1:nt,bt./st.-1.0)*M[blu,:]
     end
 
     s .= sqrt.(a.^2 .+ b.^2)
@@ -156,12 +157,12 @@ function update!(fb::FB, lcp::LCP, x::Vector)
     @inbounds fb.φ[bu] .= -fb.φ[bu]
     @inbounds fb.φ[bf] .= -b[bf]
 
-    da.nzval .= a./s .- ones(n)
-    db.nzval .= b./s .- ones(n)
-    @inbounds da.nzval[bf] .= 0.0
-    @inbounds db.nzval[bf] .= -1.0
+    da.diag .= a./s .- 1.0
+    db.diag .= b./s .- 1.0
+    @inbounds da.diag[bf] .= 0.0
+    @inbounds db.diag[bf] .= -1.0
     fb.J = da + db*M
-end    
+end
 
 """
     solve!(lcp, x0; tol, μ, μ_step, μ_min, max_iter, b_tol, store_trace, show_trace)
@@ -237,3 +238,6 @@ function solve!(lcp::LCP{TF,DenseOrSparseMatrix{TF}},
         i == max_iter && return SolverResults(x0, x, max_iter, ψ_new, r, μ, tol, false, tr)
     end
 end
+
+show(io::IO, lcp::LCP{TF}) where TF =
+    print(io, "LCP{$TF} with $(lcp.n) equations")
