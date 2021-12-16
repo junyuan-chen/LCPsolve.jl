@@ -34,7 +34,7 @@ end
 # Hold the evaluation of Fischer-Burmeister function and its Jacobian
 mutable struct FB{TF<:AbstractFloat}
     φ::Vector{TF}
-    J::SparseMatrixCSC{TF,Int}
+    J::DenseOrSparseMatrix{TF}
 end
 
 function FB{TF}(n::Int) where {TF<:AbstractFloat}
@@ -161,8 +161,7 @@ function update!(fb::FB, lcp::LCP, x::Vector)
     db.diag .= b./s .- 1.0
     @inbounds da.diag[bf] .= 0.0
     @inbounds db.diag[bf] .= -1.0
-    mul!(fb.J, db, M)
-    fb.J += da
+    fb.J = da + db*M
 end
 
 """
