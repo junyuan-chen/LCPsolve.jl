@@ -238,3 +238,6 @@ function solve!(lcp::LCP{TF,DenseOrSparseMatrix{TF}},
         i == max_iter && return SolverResults(x0, x, max_iter, ψ_new, r, μ, tol, false, tr)
     end
 end
+
+show(io::IO, lcp::LCP{TF}) where TF =
+    print(io, "LCP{$TF} with $(lcp.n) equations")

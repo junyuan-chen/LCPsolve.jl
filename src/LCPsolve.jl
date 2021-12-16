@@ -1,12 +1,10 @@
 module LCPsolve
 
 using LinearAlgebra
-using SparseArrays
 using Printf
+using SparseArrays
 
-import Base.show,
-       Base.push!,
-       Base.getindex
+import Base: show, push!, getindex
 
 export LCP, solve!
 
